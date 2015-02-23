@@ -1,5 +1,6 @@
 [org 0x7c00]
-mov ah, 0x0e
+mov ah, 0x0e ; BIOS scrolling teletype fn
+
 mov al, 'H'
 int 0x10
 mov al, 'e'
