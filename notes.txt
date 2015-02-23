@@ -1,0 +1,18 @@
+brew install coreutils
+brew install dvdrtools
+brew install qemu
+
+
+
+#make boot sector
+touch bootsector.bin
+hexedit bootsector.bin
+qemu-system-x86_64 bootsector.bin
+
+
+#make iso for vm
+trunction bootsector.bin -s 1200k
+mkisofs -o os.iso -b bootsector.bin .
+
+
+nasm src/bootsector.asm -f bin -o bin/bootsector.bin
