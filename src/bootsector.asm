@@ -12,7 +12,8 @@ call print_hex
 
 jmp $ ; spin forever
 
-%include "src/print_utils.asm"
+%include "src/print_string.asm"
+%include "src/print_hex.asm"
 
 STRING_HELLO:
 db 'Hello',0
