@@ -3,6 +3,7 @@ brew install dvdrtools
 brew install qemu
 
 http://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf
+http://www.cs.vu.nl/~herbertb/misc/basickernel.pdf
 
 qemu-system-x86_64 bootsector.bin
 
