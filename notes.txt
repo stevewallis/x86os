@@ -29,3 +29,17 @@ CL = sector number 1-63 (bits 0-5)
 DH = head number
 DL = drive number (bit 7 set for hard disk)
 ES:BX -> data buffer
+
+
+DEBUG BOOTING QEMU WITH GDB!
+qemu-system-x86_64 -s -S bootsector.bin
+gdb
+target remote localhost:1234
+set architecture i8086 (for REAL MODE)
+b *0x7c00
+c
+x/i $eip
+si
+
+objdump
+gobjdump -D -M intel -b binary -mi386 -Maddr16,data16 bin/bootsector.bin
