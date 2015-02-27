@@ -1,6 +1,6 @@
 [org 0x7c00]
 
-mov bp, 0x8000 ; init stack
+mov bp, 0xffff ; init stack
 mov sp, bp 
 
 mov si, STRING_HELLO
