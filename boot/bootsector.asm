@@ -10,18 +10,18 @@ mov si, STRING_HELLO
 call print_string
 
 call read_from_disk
-
-; switch to protected mode
+call switch_to_protected_mode
 
 jmp $ ; spin forever
 
-%include "src/print_string.asm"
-%include "src/print_hex.asm"
+%include "boot/print_string.asm"
+%include "boot/print_hex.asm"
+%include "boot/gdt.asm"
 
 [bits 16]
 switch_to_protected_mode:
 	cli 	; disable interrupts
-	lgdt [GDT_DESCRIPTOR] ; load our global descriptor table
+	lgdt [gdt_descriptor] ; load our global descriptor table
 	
 	mov eax, cr0 
 	or eax, 0x1
@@ -40,9 +40,10 @@ init_protected_mode:
 
 	mov ebp, 0x90000 ; we have more space now, so put the stack far away
 	mov esp, ebp
+	jmp $
 
 
-
+[bits 16]
 read_from_disk:
 	push ax
 	push cx
