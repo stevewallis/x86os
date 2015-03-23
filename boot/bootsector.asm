@@ -1,4 +1,5 @@
 [org 0x7c00]
+KERNEL_OFFSET equ 0x1000
 [bits 16]
 
 mov [BOOT_DRIVE], dl ; BIOS stores the number of the boot drive here, so we should keep it.
@@ -34,4 +35,5 @@ dw 0xaa55
 
 [bits 32]
 KERNEL_ENTRY:
+call KERNEL_OFFSET  ; here we go!
 jmp $
