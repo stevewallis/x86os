@@ -15,7 +15,7 @@ load_kernel_from_disk:
 
 	mov bx, 0
 	mov es, bx
-	mov bx, 0x7c00 + 0x200
+	mov bx, KERNEL_OFFSET
 
 	int 0x13 ; Fire interrupt
 
