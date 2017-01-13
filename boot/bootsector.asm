@@ -5,10 +5,26 @@ KERNEL_OFFSET equ 0x1000
 
 mov [BOOT_DRIVE], dl ; BIOS stores the number of the boot drive here, so we should keep it.
 
-mov bp, 0xffff ; init stack
+mov bp, 0x9000 ; init stack
 mov sp, bp 
 
-mov si, STRING_HELLO
+mov si, MSG_REAL_MODE
+call print_string
+
+;KBLOOP:
+;in al, 0x64
+;and al, 00000001b
+;jz KBLOOP
+;
+;in al, 0x60
+;mov dl, al
+;call print_hex
+;jmp KBLOOP
+
+mov ah, 0x0e
+int 0x10
+
+mov si, STRING_BOOTING
 call print_string
 
 
@@ -25,8 +41,9 @@ jmp $ ; spin forever
 %include "boot/gdt.asm"
 %include "boot/switch_to_protected_mode.asm"
 
-STRING_HELLO:
-db 'Hello',0x0d, 0x0a, 0
+MSG_REAL_MODE db 'Started in 16-bit Real Mode',0x0d, 0x0a, 0
+MSG_PROTECTED_MODE db 'Switched to 32-bit Protected Mode',0x0d, 0x0a, 0
+MSG_BOOTING_KERNEL db 'Booting Kernel...',0x0d, 0x0a, 0
 
 ; Global Vars
 BOOT_DRIVE: db 0

@@ -44,3 +44,9 @@ si
 
 objdump
 gobjdump -D -M intel -b binary -mi386 -Maddr16,data16 bin/bootsector.bin
+
+//TIPS
+EAX - Accumlator Register. Primary purpose: Math calculations
+EBX - Base Address Register. Primary purpose: Indirectly access memory through a base address.
+ECX - Counter Register. Primary purpose: Use in counting and looping.
+EDX - Data Register. Primary purpose: um... store data. Yep, thats about it :)
