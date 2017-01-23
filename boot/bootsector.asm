@@ -24,14 +24,14 @@ call print_string
 mov ah, 0x0e
 int 0x10
 
-mov si, STRING_BOOTING
+mov si, MSG_BOOTING_KERNEL
 call print_string
 
 
 call load_kernel_from_disk
 call switch_to_protected_mode
 
-jmp KERNEL_OFFSET ; here we go!
+call KERNEL_OFFSET ; here we go!
 
 jmp $ ; spin forever
 

@@ -21,7 +21,10 @@ bin/bootsector.bin: boot/bootsector.asm
 
 
 #kernel	
-bin/kernel.bin: ${OBJ}
+kernel/kernel_entry.o: kernel/kernel_entry.asm
+	nasm $^ -f elf -o $@
+
+bin/kernel.bin: kernel/kernel_entry.o ${OBJ}
 	$(LD) -o $@ -Ttext 0x1000 $^ -m elf_i386 --oformat binary
 
 # debugging
