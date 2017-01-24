@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include "drivers/io.h"
+
 void print(char* message);
 void glitch();
 
