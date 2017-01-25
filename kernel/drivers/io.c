@@ -1,6 +1,6 @@
 #include "io.h"
 
-uint8_t port_byte_in (uint16_t port) 
+uint8_t in_byte (uint16_t port) 
 {
 	uint8_t data;
     asm volatile ("inb %[port], %[data]"
@@ -10,7 +10,7 @@ uint8_t port_byte_in (uint16_t port)
     return data;
 }
 
-void port_byte_out (uint16_t port, uint8_t data) 
+void out_byte (uint16_t port, uint8_t data) 
 {
 	asm volatile ("outb %[data], %[port]"
 		: /*no output*/
@@ -18,7 +18,7 @@ void port_byte_out (uint16_t port, uint8_t data)
 		  [port] "dN" (port));
 }
 
-uint16_t port_word_in (uint16_t port) 
+uint16_t in_word (uint16_t port) 
 {
 	uint16_t data;
     asm volatile ("inw %[port], %[data]"
@@ -28,7 +28,7 @@ uint16_t port_word_in (uint16_t port)
     return data;
 }
 
-void port_word_out (uint16_t port, uint16_t data)
+void out_word (uint16_t port, uint16_t data)
 {
 	asm volatile ("outw %[data], %[port]"
 		: /*no output*/

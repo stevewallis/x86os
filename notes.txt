@@ -4,6 +4,10 @@ brew install qemu
 
 http://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf
 http://www.cs.vu.nl/~herbertb/misc/basickernel.pdf
+http://www.brokenthorn.com/Resources/
+https://littleosbook.github.io
+http://www.osdever.net/FreeVGA/vga/vga.htm
+http://www.jamesmolloy.co.uk/tutorial_html
 
 qemu-system-x86_64 bootsector.bin
 
