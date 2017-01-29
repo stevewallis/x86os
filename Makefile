@@ -41,7 +41,7 @@ bin/kernel.elf: ${OBJ}
 all: bin/kernel.dis bin/kernel.elf run 
 
 run: bin/os.bin
-	qemu-system-x86_64 $<
+	qemu-system-x86_64 -drive format=raw,file=$< 
 
 clean:
 	rm bin/*
