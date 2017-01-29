@@ -1,8 +1,8 @@
 CC=/Users/steve/tools/cross/bin/i686-elf-gcc
 LD=/Users/steve/tools/cross/bin/i686-elf-ld
 
-C_SRCS = $(wildcard kernel/*.c kernel/drivers/*.c stdlib/*.c)
-INCLUDES = $(wildcard kernel/*.h kernel/drivers/*.h stdlib/*.h)
+C_SRCS = $(wildcard kernel/*.c kernel/drivers/*.c libc/*.c)
+INCLUDES = $(wildcard kernel/*.h kernel/drivers/*.h libc/*.h)
 OBJ = ${C_SRCS:.c=.o}
 
 .PHONY: all clean run
@@ -21,20 +21,20 @@ bin/bootsector.bin: boot/bootsector.asm
 
 
 #kernel	
-bin/kernel.bin: kernel/kernel_entry.s.o ${OBJ}
-	$(LD) -o $@ -Ttext 0x1000 $^ -m elf_i386 --oformat binary
+bin/kernel.bin: kernel/startup.s.o ${OBJ}
+	$(LD) -o $@ -T linker.ld $^ -m elf_i386 --oformat binary
 
 # debugging
 bin/kernel.dis: bin/kernel.bin
 	ndisasm -b 32 $< > $@
 
 bin/kernel.elf: ${OBJ}
-	$(LD) -o $@ -Ttext 0x1000 $^ -m elf_i386
+	$(LD) -o $@ -T linker.ld 0x1000 $^ -m elf_i386
 
 #wilcards
 %.o: %.c ${INCLUDES}
-	$(CC) -ffreestanding -c $< -o $@ -m32 -nostdinc -isystem stdlib/
-%.s.o: %.asm
+	$(CC) -ffreestanding -c $< -o $@ -m32 -nostdinc -isystem libc/
+%.s.o: %.s
 	nasm $^ -f elf -o $@
 
 #phonys
@@ -47,5 +47,5 @@ clean:
 	rm bin/*
 	rm kernel/*.o
 	rm kernel/drivers/*.o
-	rm stdlib/*.o
+	rm libc/*.o
 
