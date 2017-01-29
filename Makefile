@@ -1,5 +1,6 @@
 CC=/Users/steve/tools/cross/bin/i686-elf-gcc
 LD=/Users/steve/tools/cross/bin/i686-elf-ld
+GDB=/Users/steve/tools/cross/bin/i686-elf-gdb
 
 C_SRCS = $(wildcard kernel/*.c kernel/drivers/*.c libc/*.c)
 INCLUDES = $(wildcard kernel/*.h kernel/drivers/*.h libc/*.h)
@@ -24,12 +25,8 @@ bin/bootsector.bin: boot/bootsector.asm
 bin/kernel.bin: kernel/startup.s.o ${OBJ}
 	$(LD) -o $@ -T linker.ld $^ -m elf_i386 --oformat binary
 
-# debugging
-bin/kernel.dis: bin/kernel.bin
-	ndisasm -b 32 $< > $@
-
-bin/kernel.elf: ${OBJ}
-	$(LD) -o $@ -T linker.ld 0x1000 $^ -m elf_i386
+bin/kernel.elf: kernel/startup.s.o ${OBJ}
+	$(LD) -o $@ -T linker.ld $^ -m elf_i386
 
 #wilcards
 %.o: %.c ${INCLUDES}
@@ -38,10 +35,14 @@ bin/kernel.elf: ${OBJ}
 	nasm $^ -f elf -o $@
 
 #phonys
-all: bin/kernel.dis bin/kernel.elf run 
+all: run 
 
 run: bin/os.bin
 	qemu-system-x86_64 -drive format=raw,file=$< 
+
+debug: bin/os.bin bin/kernel.elf
+	qemu-system-x86_64 -s -S -drive format=raw,file=$< &
+	${GDB} -ex "target remote localhost:1234" -ex "symbol-file bin/kernel.elf"
 
 clean:
 	rm bin/*

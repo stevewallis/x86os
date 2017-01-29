@@ -1,11 +1,26 @@
 #include <stdint.h>
 #include "drivers/io.h"
 
-void print(char* message);
-void glitch();
-
 #define FRAMEBUF_CMD_PORT	0x3d4
 #define FRAMEBUF_DATA_PORT	0x3d5
+
+void glitch() {
+	char* video_buffer = (char*)0xb8000;
+	static int i = 0;
+	video_buffer[i%(80*50)] = i;
+
+	i++;
+}
+
+void print(char* message) {
+	char* video_buffer = (char*)0xb8000;
+	char* next = message;
+	while (*next) {
+		*video_buffer = *next;
+		next++;
+		video_buffer+=2;
+	}
+}
 
 void kernel_main() {
 	char* video_mem = (char*)0xb8000;
@@ -45,24 +60,5 @@ void kernel_main() {
 		if (color > 0x0f) color = 0x0;
 
 		//for (int i = 0; i < 10000; ++i) {}
-	}
-}
-
-
-void glitch() {
-	char* video_buffer = (char*)0xb8000;
-	static int i = 0;
-	video_buffer[i%(80*50)] = i;
-
-	i++;
-}
-
-void print(char* message) {
-	char* video_buffer = (char*)0xb8000;
-	char* next = message;
-	while (*next) {
-		*video_buffer = *next;
-		next++;
-		video_buffer+=2;
 	}
 }
